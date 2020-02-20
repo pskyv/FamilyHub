@@ -28,12 +28,21 @@
 
     <TabBar Route="main">
         <Tab Title="Todos">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf0ae;" />
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate views:TodosPage}" />
         </Tab>
         <Tab Title="Chat">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf4ad;" />
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate views:ChatPage}" />
         </Tab>
         <Tab Title="Calendar">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf073;" />
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate views:CalendarPage}" />
         </Tab>
     </TabBar>
