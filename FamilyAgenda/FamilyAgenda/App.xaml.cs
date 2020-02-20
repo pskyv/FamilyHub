@@ -19,17 +19,20 @@ namespace FamilyAgenda
 
         public App(IPlatformInitializer initializer) : base(initializer) { }
 
-        protected override async void OnInitialized()
+        protected override void OnInitialized()
         {
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/MainPage");
+            MainPage = new AppShell();
+
+            //await NavigationService.NavigateAsync("NavigationPage/MainPage");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterForNavigation<NavigationPage>();
-            containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+            containerRegistry.RegisterForNavigation<TodosPage, TodosPageViewModel>();
+            containerRegistry.RegisterForNavigation<ChatPage, ChatPageViewModel>();
+            containerRegistry.RegisterForNavigation<CalendarPage, CalendarPageViewModel>();
         }
     }
 }

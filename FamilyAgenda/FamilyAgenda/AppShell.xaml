@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+       xmlns:views="clr-namespace:FamilyAgenda.Views"     
+       mc:Ignorable="d"
+       x:Class="FamilyAgenda.AppShell" 
+       Visual="Material">
+
+    <Shell.Resources>
+        <Style x:Key="BaseStyle" TargetType="Element">
+            <Setter Property="Shell.BackgroundColor" Value="{StaticResource primary}" />
+            <Setter Property="Shell.TitleColor" Value="White" />
+            <Setter Property="Shell.ForegroundColor" Value="White" />
+            <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
+            <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource primary}"/>
+            <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource accent}"/>
+            <Setter Property="Shell.TabBarBackgroundColor" Value="White" />
+            <!--<Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
+            <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />-->
+        </Style>
+    </Shell.Resources>
+
+    <!--<ShellItem Route="login">
+        <ShellContent ContentTemplate="{DataTemplate views:LoginPage}" />
+    </ShellItem>-->
+
+    <TabBar Route="main">
+        <Tab Title="Todos">
+            <ShellContent ContentTemplate="{DataTemplate views:TodosPage}" />
+        </Tab>
+        <Tab Title="Chat">
+            <ShellContent ContentTemplate="{DataTemplate views:ChatPage}" />
+        </Tab>
+        <Tab Title="Calendar">
+            <ShellContent ContentTemplate="{DataTemplate views:CalendarPage}" />
+        </Tab>
+    </TabBar>
+</Shell>

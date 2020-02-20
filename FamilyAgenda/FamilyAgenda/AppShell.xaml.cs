@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 
-namespace FamilyAgenda.Views
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
+namespace FamilyAgenda
 {
-    public partial class MainPage : ContentPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class AppShell : Shell
     {
-        public MainPage()
+        public AppShell()
         {
             InitializeComponent();
         }

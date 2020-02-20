@@ -6,6 +6,19 @@
 	<Application.Resources>
 
 		<!-- Application resource dictionary -->
+        <ResourceDictionary >
+            <Color x:Key="primary">#607D8B</Color>
+            <Color x:Key="primaryDark">#455A64</Color>
+            <Color x:Key="primaryLight">#CFD8DC</Color>
+            <Color x:Key="accent">#00BCD4</Color>
+            <Color x:Key="primaryText">#212121</Color>
+            <Color x:Key="secondaryText">#757575</Color>
+            <Color x:Key="divider">#BDBDBD</Color>
 
-	</Application.Resources>
+            <Style TargetType="ActivityIndicator">
+                <Setter Property="Color" Value="Accent" />
+            </Style>
+        </ResourceDictionary>
+
+    </Application.Resources>
 </prism:PrismApplication>
