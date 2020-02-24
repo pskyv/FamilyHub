@@ -4,6 +4,8 @@ using FamilyAgenda.ViewModels;
 using FamilyAgenda.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using FamilyAgenda.Utils;
+using FamilyAgenda.Services;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace FamilyAgenda
@@ -21,6 +23,8 @@ namespace FamilyAgenda
 
         protected override void OnInitialized()
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(Constants.SyncfusionLicenseKey);
+
             InitializeComponent();
 
             MainPage = new AppShell();
@@ -33,6 +37,8 @@ namespace FamilyAgenda
             containerRegistry.RegisterForNavigation<TodosPage, TodosPageViewModel>();
             containerRegistry.RegisterForNavigation<ChatPage, ChatPageViewModel>();
             containerRegistry.RegisterForNavigation<CalendarPage, CalendarPageViewModel>();
+
+            containerRegistry.RegisterSingleton(typeof(IFirebaseDbService), typeof(FirebaseDbService));
         }
     }
 }
