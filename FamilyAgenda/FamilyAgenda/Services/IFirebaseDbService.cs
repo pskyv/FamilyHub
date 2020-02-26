@@ -14,5 +14,9 @@ namespace FamilyAgenda.Services
         Task<bool> AddUserAsync(User user);
 
         Task<List<User>> GetUsersAsync();
+
+        Task<List<TodoItem>> GetTodoItemsAsync();
+
+        Task<bool> AddTodoItemAsync(TodoItem todoItem);
     }
 }

@@ -22,9 +22,9 @@
         </Style>
     </Shell.Resources>
 
-    <!--<ShellItem Route="login">
+    <ShellItem Route="login">
         <ShellContent ContentTemplate="{DataTemplate views:LoginPage}" />
-    </ShellItem>-->
+    </ShellItem>
 
     <TabBar Route="main">
         <Tab Title="Todos">

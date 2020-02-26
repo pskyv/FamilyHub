@@ -20,7 +20,8 @@ namespace FamilyAgenda.Models
         [JsonProperty("email")]
         public string Email { get; set; }
 
-        [JsonProperty("profile_photo")]
+        //[JsonProperty("profile_photo")]
+        [JsonIgnore]
         public ImageSource ProfilePhoto { get; set; }
     }
 }

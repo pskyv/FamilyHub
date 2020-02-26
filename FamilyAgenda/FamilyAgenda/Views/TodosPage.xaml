@@ -1,9 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="FamilyAgenda.Views.TodosPage"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="False"
+             Visual="Material">
+
+    <Grid RowSpacing="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackLayout Padding="20,50" Spacing="0">
+            <Label Text="{Binding Source={x:Static sys:DateTime.Now}, StringFormat='{0:dd MMM yyyy}'}" 
+                   TextColor="{StaticResource secondaryText}"
+                   FontSize="Small"/>
+            <Label Text="Family's todo list"
+                   TextColor="{StaticResource primaryText}"
+                   FontSize="Title"
+                   FontAttributes="Bold"/>
+        </StackLayout>
+
+        <StackLayout Grid.Row="1" Padding="10" Orientation="Horizontal" Spacing="0">
+            <Entry Placeholder="Add new todo item..."
+                   Text="{Binding NewTodoItem.Content}"
+                   HorizontalOptions="FillAndExpand" />
+            <Button Text="Add"
+                    HorizontalOptions="EndAndExpand" />
+        </StackLayout>
+
+        <Frame Grid.Row="2" HeightRequest="40" WidthRequest="40" CornerRadius="20" BackgroundColor="Aqua" HorizontalOptions="Start" VerticalOptions="Start" Padding="0" Margin="10">
+            <Label Text="P" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+        </Frame>
+    </Grid>
   
 </ContentPage>

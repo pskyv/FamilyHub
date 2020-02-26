@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using FamilyAgenda.Utils;
 using FamilyAgenda.Services;
+using FamilyAgenda.Models;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace FamilyAgenda
@@ -21,6 +22,8 @@ namespace FamilyAgenda
 
         public App(IPlatformInitializer initializer) : base(initializer) { }
 
+        public static User ApplicationUser { get; set; }
+
         protected override void OnInitialized()
         {
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(Constants.SyncfusionLicenseKey);
@@ -34,11 +37,12 @@ namespace FamilyAgenda
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
             containerRegistry.RegisterForNavigation<TodosPage, TodosPageViewModel>();
             containerRegistry.RegisterForNavigation<ChatPage, ChatPageViewModel>();
             containerRegistry.RegisterForNavigation<CalendarPage, CalendarPageViewModel>();
 
-            containerRegistry.RegisterSingleton(typeof(IFirebaseDbService), typeof(FirebaseDbService));
+            containerRegistry.RegisterSingleton(typeof(IFirebaseDbService), typeof(FirebaseDbService));            
         }
     }
 }
