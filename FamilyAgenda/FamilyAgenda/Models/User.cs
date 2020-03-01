@@ -14,13 +14,22 @@ namespace FamilyAgenda.Models
         [JsonProperty("username")]
         public string Username { get; set; }
 
+        [JsonIgnore]
+        public char UserInitials
+        {
+            get
+            {
+                return Username[0];
+            }
+        }
+
         [JsonProperty("password")]
         public string Password { get; set; }
 
         [JsonProperty("email")]
         public string Email { get; set; }
 
-        //[JsonProperty("profile_photo")]
+        //[JsonProperty("profile_photo")]        
         [JsonIgnore]
         public ImageSource ProfilePhoto { get; set; }
     }

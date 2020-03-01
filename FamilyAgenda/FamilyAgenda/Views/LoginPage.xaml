@@ -25,7 +25,71 @@
         </Style>
     </ContentPage.Resources>
 
-    <Grid Padding="0,20">
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackLayout Padding="20,50" Spacing="0" BackgroundColor="{StaticResource primary}">
+            <Label Text="Select user to continue"
+                   TextColor="White"
+                   FontSize="Title"
+                   FontAttributes="Bold"/>
+        </StackLayout>
+
+        <Frame Grid.Row="1" 
+               CornerRadius="25"
+               Margin="0,-20,0,-20"    
+               Padding="0,30">
+
+            <CollectionView ItemsSource="{Binding Users}" 
+                            SelectionMode="Single"
+                            SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
+                            SelectionChangedCommand="{Binding SelectUserCommand}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="20,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Frame Style="{StaticResource Initials}"
+                                   BackgroundColor="Accent" 
+                                   HorizontalOptions="Start" 
+                                   VerticalOptions="Center">
+                                <Label Text="{Binding UserInitials}" 
+                                       HorizontalOptions="Center" 
+                                       VerticalOptions="Center" 
+                                       HorizontalTextAlignment="Center" 
+                                       VerticalTextAlignment="Center" />
+                            </Frame>
+                            <StackLayout Grid.Column="1" Spacing="0" VerticalOptions="Center" Margin="10,0,10,0">
+                                <Label Text="{Binding Username}" 
+                                       TextColor="{StaticResource primaryText}" />
+                                <Label Text="{Binding Email}" 
+                                       FontSize="Micro" 
+                                       TextColor="{StaticResource secondaryText}" />
+                            </StackLayout>
+                            <Label Grid.Column="2"
+                                   Text="&#xf2f6;"
+                                   FontFamily="{StaticResource FontAwesomeSolid}"
+                                   TextColor="{StaticResource primaryDark}"
+                                   HorizontalOptions="EndAndExpand" 
+                                   VerticalOptions="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Frame>
+    </Grid>
+
+    <!--<Grid Padding="0,40">
 
         <CollectionView ItemsSource="{Binding Users}"
                         SelectionMode="Single"
@@ -34,12 +98,12 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="20">
-                        <!--<Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <Image Source="{Binding ProfilePhoto}" />-->
+                        <Image Source="{Binding ProfilePhoto}" />
                         <Label Text="{Binding Username}" />
 
                     </Grid>
@@ -47,6 +111,6 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-    </Grid>
-  
+    </Grid>-->
+
 </ContentPage>
