@@ -18,8 +18,10 @@ namespace FamilyAgenda.Services
         {
             _firebaseClient = new FirebaseClient(Constants.FirebaseDataBaseUrl);
             ListenOnUsersChanges();
-        }        
+            ListenOnTodoItemsChanges();
+        }
 
+        #region listeners
         private void ListenOnUsersChanges()
         {
             try
@@ -34,6 +36,22 @@ namespace FamilyAgenda.Services
             }
         }
 
+        private void ListenOnTodoItemsChanges()
+        {
+            try
+            {
+                var observable = _firebaseClient.Child("todos")
+                                                .AsObservable<TodoItem>()
+                                                .Subscribe(d => MessagingCenter.Send(this, "TodoChangeEvent"));
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        #endregion
+
+        #region users
         public async Task<bool> FindUserById(string userId)
         {
             try
@@ -86,9 +104,13 @@ namespace FamilyAgenda.Services
 
             return true;
         }
+        #endregion
+
+        #region items
 
         public async Task<List<TodoItem>> GetTodoItemsAsync()
         {
+            TodoItem todoItem = null;
             try
             {
                 var todos = await _firebaseClient.Child("todos")
@@ -98,7 +120,9 @@ namespace FamilyAgenda.Services
 
                 foreach (var todo in todos)
                 {
-                    todosList.Add(todo.Object);
+                    todoItem = todo.Object;
+                    todoItem.TodoItemId = todo.Key;
+                    todosList.Add(todoItem);
                 }
 
                 return todosList;
@@ -123,5 +147,38 @@ namespace FamilyAgenda.Services
 
             return true;
         }
+
+        public async Task<bool> UpdateTodoItemAsync(TodoItem todoItem)
+        {
+            try
+            {
+                await _firebaseClient.Child("todos")
+                                     .Child(todoItem.TodoItemId)
+                                     .PutAsync(todoItem);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<bool> DeleteItemAsync(string key)
+        {
+            try
+            {
+                await _firebaseClient.Child("todos")
+                                     .Child(key)
+                                     .DeleteAsync();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
     }
 }

@@ -17,8 +17,8 @@
             <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource primary}"/>
             <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource accent}"/>
             <Setter Property="Shell.TabBarBackgroundColor" Value="White" />
-            <!--<Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
-            <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />-->
+            <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
+            <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
         </Style>
     </Shell.Resources>
 
@@ -39,7 +39,7 @@
             </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate views:ChatPage}" />
         </Tab>
-        <Tab Title="Calendar">
+        <Tab Title="Scheduler">
             <Tab.Icon>
                 <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf073;" />
             </Tab.Icon>
