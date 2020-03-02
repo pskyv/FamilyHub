@@ -39,7 +39,7 @@
         <Frame Grid.Row="1" 
                CornerRadius="25"
                Margin="0,-20,0,-20"    
-               Padding="20,30">
+               Padding="0,30">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -47,7 +47,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Grid ColumnSpacing="0">
+                <Grid Padding="20,0" ColumnSpacing="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
@@ -64,7 +64,7 @@
                                           Command="{Binding AddNewItemCommand}"/>
                 </Grid>
 
-                <BoxView Grid.Row="1" Margin="0,10,0,20" />
+                <BoxView Grid.Row="1" Margin="10,10,10,20" />
 
                 <RefreshView Grid.Row="2" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}">
                     <ScrollView>
@@ -83,7 +83,7 @@
                                                            CommandParameter="{Binding}"/>
                                             </SwipeItems>
                                         </SwipeView.RightItems>
-                                        <Grid Padding="4">
+                                        <Grid Padding="20,4">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />

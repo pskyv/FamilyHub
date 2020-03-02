@@ -11613,10 +11613,13 @@ namespace FamilyAgenda.Droid
 			public const int sofaki = 2131165542;
 			
 			// aapt resource value: 0x7F070167
-			public const int tooltip_frame_dark = 2131165543;
+			public const int splash = 2131165543;
 			
 			// aapt resource value: 0x7F070168
-			public const int tooltip_frame_light = 2131165544;
+			public const int tooltip_frame_dark = 2131165544;
+			
+			// aapt resource value: 0x7F070169
+			public const int tooltip_frame_light = 2131165545;
 			
 			static Drawable()
 			{
@@ -13790,6 +13793,9 @@ namespace FamilyAgenda.Droid
 			
 			// aapt resource value: 0x7F0E00E7
 			public const int RtlUnderlay_Widget_AppCompat_ActionButton_Overflow = 2131624167;
+			
+			// aapt resource value: 0x7F0E0204
+			public const int splashscreen = 2131624452;
 			
 			// aapt resource value: 0x7F0E00E8
 			public const int TextAppearance_AppCompat = 2131624168;
