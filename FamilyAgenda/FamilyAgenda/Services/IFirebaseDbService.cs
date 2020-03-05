@@ -22,5 +22,9 @@ namespace FamilyAgenda.Services
         Task<bool> UpdateTodoItemAsync(TodoItem todoItem);
 
         Task<bool> DeleteItemAsync(string key);
+
+        Task<bool> AddMessageAsync(Message message);
+
+        Task<List<Message>> GetMessagesAsync();
     }
 }

@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using Syncfusion.XForms.Chat;
+using Xamarin.Forms;
 
 namespace FamilyAgenda.Views
 {
@@ -7,6 +8,12 @@ namespace FamilyAgenda.Views
         public ChatPage()
         {
             InitializeComponent();
+        }
+
+        private void sfChat_SendMessage(object sender, Syncfusion.XForms.Chat.SendMessageEventArgs e)
+        {
+            MessagingCenter.Send<ChatPage, TextMessage>(this, "NewMessage", e.Message);
+            e.Handled = true;
         }
     }
 }

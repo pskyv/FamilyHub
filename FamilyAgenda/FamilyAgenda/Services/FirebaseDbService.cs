@@ -19,6 +19,7 @@ namespace FamilyAgenda.Services
             _firebaseClient = new FirebaseClient(Constants.FirebaseDataBaseUrl);
             ListenOnUsersChanges();
             ListenOnTodoItemsChanges();
+            ListenOnMessagesChanges();
         }
 
         #region listeners
@@ -43,6 +44,20 @@ namespace FamilyAgenda.Services
                 var observable = _firebaseClient.Child("todos")
                                                 .AsObservable<TodoItem>()
                                                 .Subscribe(d => MessagingCenter.Send(this, "TodoChangeEvent"));
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void ListenOnMessagesChanges()
+        {
+            try
+            {
+                var observable = _firebaseClient.Child("messages")
+                                                .AsObservable<Message>()
+                                                .Subscribe(d => MessagingCenter.Send(this, "MessageChangeEvent"));
             }
             catch (Exception ex)
             {
@@ -171,6 +186,45 @@ namespace FamilyAgenda.Services
                 await _firebaseClient.Child("todos")
                                      .Child(key)
                                      .DeleteAsync();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
+
+        #region messages
+        public async Task<List<Message>> GetMessagesAsync()
+        {
+            try
+            {
+                var messages = await _firebaseClient.Child("messages")
+                                                 .OnceAsync<Message>();
+
+                var messagesList = new List<Message>();
+
+                foreach (var msg in messages)
+                {
+                    messagesList.Add(msg.Object);
+                }
+
+                return messagesList;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public async Task<bool> AddMessageAsync(Message message)
+        {
+            try
+            {
+                await _firebaseClient.Child("messages")
+                                     .PostAsync(message);
             }
             catch (Exception ex)
             {
