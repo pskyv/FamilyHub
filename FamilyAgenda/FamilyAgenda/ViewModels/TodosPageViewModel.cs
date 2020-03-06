@@ -102,7 +102,7 @@ namespace FamilyAgenda.ViewModels
             NewTodoItem.Content = TodoContent;
             NewTodoItem.Username = Preferences.Get("user", "");
             NewTodoItem.Completed = false;
-            NewTodoItem.Timestamp = (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+            NewTodoItem.CreatedAtTimestamp = (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             var result = await FirebaseDbService.AddTodoItemAsync(NewTodoItem);
             if (result)
             {                

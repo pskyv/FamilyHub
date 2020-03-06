@@ -133,14 +133,30 @@ namespace FamilyAgenda.Services
 
                 var todosList = new List<TodoItem>();
 
+                var now = (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                var timeDifference = now;
+
                 foreach (var todo in todos)
                 {
                     todoItem = todo.Object;
                     todoItem.TodoItemId = todo.Key;
-                    todosList.Add(todoItem);
+
+
+                    if (!todoItem.Completed)
+                    {
+                        todosList.Add(todoItem);
+                    }
+                    else
+                    {
+                        timeDifference = now - (long)todoItem.CreatedAtTimestamp;
+                        if (timeDifference < 86400)
+                        {
+                            todosList.Add(todoItem);
+                        }
+                    }
                 }
 
-                return todosList;
+                return todosList.OrderByDescending(t => t.CreatedAtTimestamp).ToList();
             }
             catch (Exception ex)
             {

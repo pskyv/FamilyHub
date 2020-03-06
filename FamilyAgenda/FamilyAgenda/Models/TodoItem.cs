@@ -26,15 +26,15 @@ namespace FamilyAgenda.Models
             }  
         }
 
-        [JsonProperty("timestamp")]
-        public long Timestamp { get; set; }
+        [JsonProperty("created_at")]
+        public long CreatedAtTimestamp { get; set; }
 
         [JsonIgnore]
         public DateTime CreatedAt
         {
             get
             {
-                return Helpers.UnixTimeStampToDateTime(Timestamp);
+                return Helpers.UnixTimeStampToDateTime(CreatedAtTimestamp);
             }
         }
 
