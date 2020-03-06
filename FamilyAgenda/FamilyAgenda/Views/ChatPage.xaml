@@ -2,10 +2,15 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:sfChat="clr-namespace:Syncfusion.XForms.Chat;assembly=Syncfusion.SfChat.XForms"
+             xmlns:behaviors="clr-namespace:FamilyAgenda.Behaviors"
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="FamilyAgenda.Views.ChatPage"
              Shell.NavBarIsVisible="False">
+
+    <ContentPage.Behaviors>
+        <behaviors:ChatPageBehavior />
+    </ContentPage.Behaviors>
 
     <sfChat:SfChat x:Name="sfChat"
                    Messages="{Binding Messages}"

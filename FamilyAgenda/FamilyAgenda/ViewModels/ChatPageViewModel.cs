@@ -65,6 +65,11 @@ namespace FamilyAgenda.ViewModels
         private async void GetMessagesAsync()
         {
             var messages = await FirebaseDbService.GetMessagesAsync();
+            if (Messages.Count == messages.Count)
+            {
+                return;
+            }
+
             Messages.Clear();
             
             foreach(var msg in messages)
@@ -72,7 +77,7 @@ namespace FamilyAgenda.ViewModels
                 var textMessage = new TextMessage
                 {
                     Text = msg.Text,
-                    DateTime = Helpers.UnixTimeStampToDateTime(msg.Timestamp),
+                    DateTime = Helpers.UnixTimeStampToDateTime(msg.Timestamp, false),
                     Author = msg.Username.Equals(CurrentUser.Name) ? CurrentUser : new Author { Name = msg.Username }
                 };
 
