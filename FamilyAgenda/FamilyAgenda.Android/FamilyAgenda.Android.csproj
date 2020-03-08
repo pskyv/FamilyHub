@@ -65,13 +65,16 @@
       <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.Buttons">
-      <Version>17.4.0.51</Version>
+      <Version>17.4.0.53</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.SfChat">
-      <Version>17.4.0.51</Version>
+      <Version>17.4.0.53</Version>
+    </PackageReference>
+    <PackageReference Include="Syncfusion.Xamarin.SfSchedule">
+      <Version>17.4.0.53</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Essentials">
-      <Version>1.5.0</Version>
+      <Version>1.5.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="4.5.0.356" />
     <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="28.0.0.3" />

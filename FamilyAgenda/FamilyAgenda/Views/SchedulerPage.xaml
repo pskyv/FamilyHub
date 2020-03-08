@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:syncfusion="clr-namespace:Syncfusion.SfSchedule.XForms;assembly=Syncfusion.SfSchedule.XForms"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:cv="clr-namespace:FamilyAgenda.Converters"
+             x:Class="FamilyAgenda.Views.SchedulerPage"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <cv:InitialsBgColorConverter x:Key="InitialsBgColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+
+        <syncfusion:SfSchedule ScheduleView="MonthView" 
+                               DataSource="{Binding Events}"
+                               SelectedDate="{Binding SelectedDate}">
+            <syncfusion:SfSchedule.HeaderStyle>
+                <syncfusion:HeaderStyle 
+                BackgroundColor="{StaticResource primary}" 
+                TextColor="White" />
+            </syncfusion:SfSchedule.HeaderStyle>
+
+            <syncfusion:SfSchedule.MonthViewSettings>
+                <syncfusion:MonthViewSettings ShowAgendaView="true" AppointmentDisplayMode="Indicator">
+                    <syncfusion:MonthViewSettings.AgendaItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Frame Style="{StaticResource Initials}"
+                                       BackgroundColor="{Binding UserInitials, Converter={StaticResource InitialsBgColorConverter}}" 
+                                       HorizontalOptions="Start" 
+                                       VerticalOptions="Center"
+                                       Margin="10,0,0,0">
+                                    <Label Text="{Binding UserInitials}" 
+                                           HorizontalOptions="Center" 
+                                           VerticalOptions="Center" 
+                                           HorizontalTextAlignment="Center" 
+                                           VerticalTextAlignment="Center" />
+                                </Frame>
+                                <StackLayout Grid.Column="1" Spacing="0" VerticalOptions="Center" Margin="10,0,10,0">
+                                    <Label Text="{Binding Subject}"
+                                           TextColor="{StaticResource primaryText}" />
+                                    <Label Text="{Binding SchedulerStartTime, StringFormat=\{0:hh\\:mm\}}" 
+                                           FontSize="Micro" 
+                                           TextColor="{StaticResource secondaryText}" />
+                                </StackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </syncfusion:MonthViewSettings.AgendaItemTemplate>
+                </syncfusion:MonthViewSettings>
+            </syncfusion:SfSchedule.MonthViewSettings>
+
+            <syncfusion:SfSchedule.AppointmentMapping>
+                <syncfusion:ScheduleAppointmentMapping
+                    ColorMapping="Color"
+                    EndTimeMapping="SchedulerEndTime"
+                    StartTimeMapping="SchedulerStartTime"
+                    SubjectMapping="Subject" />
+            </syncfusion:SfSchedule.AppointmentMapping>
+        </syncfusion:SfSchedule>
+
+        <Button Text="&#xf067;" 
+                FontSize="Large"
+                FontFamily="{StaticResource FontAwesomeSolid}"
+                BackgroundColor="{StaticResource primary}" 
+                BorderRadius="30" 
+                TextColor="White"                  
+                WidthRequest="60" 
+                HeightRequest="60" 
+                Margin="0,0,20,22"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Command="{Binding AddSchedulerEventCommand}"/>
+
+    </Grid>
+
+</ContentPage>

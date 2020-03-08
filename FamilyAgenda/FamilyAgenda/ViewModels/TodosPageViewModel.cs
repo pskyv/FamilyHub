@@ -16,7 +16,6 @@ namespace FamilyAgenda.ViewModels
     {
         private TodoItem _newTodoItem;
         private string _todoContent = "";
-        private bool _isLoading;
         private bool _isRefreshing;
 
         public TodosPageViewModel(INavigationService navigationService, IFirebaseDbService firebaseDbService) : base(navigationService, firebaseDbService)
@@ -49,12 +48,6 @@ namespace FamilyAgenda.ViewModels
         { 
             get { return _todoContent; } 
             set { SetProperty(ref _todoContent, value); }
-        }
-
-        public bool IsLoading
-        {
-            get { return _isLoading; }
-            set { SetProperty(ref _isLoading, value); }
         }
 
         public bool IsRefreshing

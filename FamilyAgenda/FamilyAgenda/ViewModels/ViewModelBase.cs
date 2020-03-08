@@ -13,6 +13,13 @@ namespace FamilyAgenda.ViewModels
         protected INavigationService NavigationService { get; private set; }
         protected IFirebaseDbService FirebaseDbService { get; private set; }
 
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set { SetProperty(ref _isLoading, value); }
+        }
+
         private string _title;
         public string Title
         {

@@ -250,5 +250,44 @@ namespace FamilyAgenda.Services
             return true;
         }
         #endregion
+
+        #region events
+        public async Task<List<SchedulerEvent>> GetEventsAsync()
+        {
+            try
+            {
+                var events = await _firebaseClient.Child("events")
+                                                 .OnceAsync<SchedulerEvent>();
+
+                var eventsList = new List<SchedulerEvent>();
+
+                foreach (var schEvent in events)
+                {
+                    eventsList.Add(schEvent.Object);
+                }
+
+                return eventsList;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public async Task<bool> AddEventAsync(SchedulerEvent schedulerEvent)
+        {
+            try
+            {
+                await _firebaseClient.Child("events")
+                                     .PostAsync(schedulerEvent);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
     }
 }

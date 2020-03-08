@@ -26,5 +26,9 @@ namespace FamilyAgenda.Services
         Task<bool> AddMessageAsync(Message message);
 
         Task<List<Message>> GetMessagesAsync();
+
+        Task<List<SchedulerEvent>> GetEventsAsync();
+
+        Task<bool> AddEventAsync(SchedulerEvent schedulerEvent);
     }
 }

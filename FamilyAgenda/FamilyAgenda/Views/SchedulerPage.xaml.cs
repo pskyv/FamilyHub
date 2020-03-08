@@ -2,9 +2,9 @@
 
 namespace FamilyAgenda.Views
 {
-    public partial class CalendarPage : ContentPage
+    public partial class SchedulerPage : ContentPage
     {
-        public CalendarPage()
+        public SchedulerPage()
         {
             InitializeComponent();
         }

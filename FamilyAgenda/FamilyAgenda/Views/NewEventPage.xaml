@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="FamilyAgenda.Views.NewEventPage">
+
+    <StackLayout Padding="30,20" Spacing="30">
+        <Button Text="&#xf00d;"
+                FontSize="Large"
+                FontFamily="{StaticResource FontAwesomeSolid}"
+                BackgroundColor="Transparent"
+                HorizontalOptions="End"
+                Margin="0,0,-30,0"
+                Command="{Binding CancelCommand}" />
+
+        <DatePicker Date="{Binding SchedulerEvent.StartDate}" Format="dd/MM/yyyy" />
+
+        <TimePicker Time="{Binding SchedulerEvent.StartTime}" Format="HH:mm" />
+
+        <Entry Placeholder="Enter subject..." Text="{Binding SchedulerEvent.Subject}" />
+
+        <DatePicker Date="{Binding SchedulerEvent.EndDate}" Format="dd/MM/yyyy" />
+
+        <TimePicker Time="{Binding SchedulerEvent.EndTime}" Format="HH:mm" />
+
+        <Button Text="Save" BackgroundColor="{StaticResource primary}" VerticalOptions="EndAndExpand" Command="{Binding SaveEventCommand}" />
+    </StackLayout>
+
+</ContentPage>

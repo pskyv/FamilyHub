@@ -40,7 +40,8 @@ namespace FamilyAgenda
             containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
             containerRegistry.RegisterForNavigation<TodosPage, TodosPageViewModel>();
             containerRegistry.RegisterForNavigation<ChatPage, ChatPageViewModel>();
-            containerRegistry.RegisterForNavigation<CalendarPage, CalendarPageViewModel>();
+            containerRegistry.RegisterForNavigation<SchedulerPage, SchedulerPageViewModel>();
+            containerRegistry.RegisterForNavigation<NewEventPage, NewEventPageViewModel>();
 
             containerRegistry.RegisterSingleton(typeof(IFirebaseDbService), typeof(FirebaseDbService));            
         }

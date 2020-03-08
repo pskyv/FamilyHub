@@ -43,7 +43,7 @@
             <Tab.Icon>
                 <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf073;" />
             </Tab.Icon>
-            <ShellContent ContentTemplate="{DataTemplate views:CalendarPage}" />
+            <ShellContent ContentTemplate="{DataTemplate views:SchedulerPage}" />
         </Tab>
     </TabBar>
 </Shell>
