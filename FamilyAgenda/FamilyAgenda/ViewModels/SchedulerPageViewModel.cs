@@ -17,7 +17,13 @@ namespace FamilyAgenda.ViewModels
         public SchedulerPageViewModel(INavigationService navigationService, IFirebaseDbService firebaseDbService) : base(navigationService, firebaseDbService)
         {
             AddSchedulerEventCommand = new DelegateCommand(AddSchedulerEventAsync);
-            MessagingCenter.Subscribe<NewEventPageViewModel>(this, "NewEventMsg", (sender) => { GetEventsAsync(); });
+            MessagingCenter.Subscribe<FirebaseDbService>(this, "SchedulerChangeEvent", (sender) =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    GetEventsAsync();
+                });
+            });
 
             GetEventsAsync();
             SelectedDate = DateTime.Today;

@@ -20,6 +20,7 @@ namespace FamilyAgenda.Services
             ListenOnUsersChanges();
             ListenOnTodoItemsChanges();
             ListenOnMessagesChanges();
+            ListenOnEventsChanges();
         }
 
         #region listeners
@@ -58,6 +59,20 @@ namespace FamilyAgenda.Services
                 var observable = _firebaseClient.Child("messages")
                                                 .AsObservable<Message>()
                                                 .Subscribe(d => MessagingCenter.Send(this, "MessageChangeEvent"));
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void ListenOnEventsChanges()
+        {
+            try
+            {
+                var observable = _firebaseClient.Child("events")
+                                                .AsObservable<SchedulerEvent>()
+                                                .Subscribe(d => MessagingCenter.Send(this, "SchedulerChangeEvent"));
             }
             catch (Exception ex)
             {

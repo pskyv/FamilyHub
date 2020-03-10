@@ -39,7 +39,7 @@
                                        BackgroundColor="{Binding UserInitials, Converter={StaticResource InitialsBgColorConverter}}" 
                                        HorizontalOptions="Start" 
                                        VerticalOptions="Center"
-                                       Margin="10,0,0,0">
+                                       Margin="10,0,0,4">
                                     <Label Text="{Binding UserInitials}" 
                                            HorizontalOptions="Center" 
                                            VerticalOptions="Center" 
