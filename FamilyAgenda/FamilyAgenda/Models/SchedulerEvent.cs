@@ -34,7 +34,10 @@ namespace FamilyAgenda.Models
         public TimeSpan EndTime { get; set; }
 
         [JsonIgnore]
-        public Color Color { get; set; }
+        public Color Color 
+        { 
+            get { return Color.Accent; } 
+        }
 
         [JsonIgnore]
         public DateTime SchedulerStartTime
