@@ -44,9 +44,13 @@ namespace FamilyAgenda.ViewModels
             try
             {
                 IsLoading = true;
+
                 var events = await FirebaseDbService.GetEventsAsync();
-                Events.Clear();
-                events.ForEach(Events.Add);
+                if (events != null)
+                {
+                    Events.Clear();
+                    events.ForEach(Events.Add);
+                }
             }
             finally
             {

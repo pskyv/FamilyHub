@@ -21,5 +21,9 @@ namespace FamilyAgenda.Utils
                                                        "MjI0MzhAMzEzNjJlMzIyZTMwZDJQODFSYzdnTEZQRU42ZGhNMk1LZFY0amVrR0ttZnJKOGlQMU51ckhEND0=";
 
         public const string SyncfusionLicenseKey = "MjE2ODE5QDMxMzcyZTM0MmUzMGtmZUF5WWZsa2FzYXlac0JTNUp0NzlvenpYSTAvU0lmSU1LNHNPYzJxaGc9";
+
+        public const string ConnectivityLostMsg = "No internet connection";
+        public const string NoConnectionMsg = "Couldn't refresh items, check your connection";
+        public const string CouldNotPerformActionMsg = "Couldn't perform action, check your connection";
     }
 }

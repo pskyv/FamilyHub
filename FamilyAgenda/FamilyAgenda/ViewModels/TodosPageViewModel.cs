@@ -17,6 +17,7 @@ namespace FamilyAgenda.ViewModels
         private TodoItem _newTodoItem;
         private string _todoContent = "";
         private bool _isRefreshing;
+        private bool _isCheckBoxVisible;
 
         public TodosPageViewModel(INavigationService navigationService, IFirebaseDbService firebaseDbService) : base(navigationService, firebaseDbService)
         {
@@ -36,6 +37,9 @@ namespace FamilyAgenda.ViewModels
                     GetItemsAsync();
                 });
             });
+
+            IsCheckBoxVisible = Connectivity.NetworkAccess == NetworkAccess.Internet;
+            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
         }        
 
         public TodoItem NewTodoItem
@@ -54,6 +58,12 @@ namespace FamilyAgenda.ViewModels
         {
             get { return _isRefreshing; }
             set { SetProperty(ref _isRefreshing, value); }
+        }
+
+        public bool IsCheckBoxVisible
+        {
+            get { return _isCheckBoxVisible; }
+            set { SetProperty(ref _isCheckBoxVisible, value); }
         }
 
         public ObservableCollection<TodoItem> TodoItems { get; set; } = new ObservableCollection<TodoItem>();
@@ -96,9 +106,8 @@ namespace FamilyAgenda.ViewModels
             NewTodoItem.Username = Preferences.Get("user", "");
             NewTodoItem.Completed = false;
             NewTodoItem.CreatedAtTimestamp = (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-            var result = await FirebaseDbService.AddTodoItemAsync(NewTodoItem);
-            if (result)
-            {                
+            if (await FirebaseDbService.AddTodoItemAsync(NewTodoItem))
+            {
                 TodoContent = "";
             }
         }
@@ -138,6 +147,11 @@ namespace FamilyAgenda.ViewModels
             }
 
             await FirebaseDbService.DeleteItemAsync(todoItem.TodoItemId);
+        }
+
+        private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        {
+            IsCheckBoxVisible = e.NetworkAccess == NetworkAccess.Internet;
         }
     }
 }

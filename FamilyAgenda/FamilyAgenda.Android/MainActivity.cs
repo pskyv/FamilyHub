@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using Acr.UserDialogs;
+using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Prism;
@@ -22,6 +23,9 @@ namespace FamilyAgenda.Droid
             Forms.SetFlags("SwipeView_Experimental");
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+
+            UserDialogs.Init(this);
+
             LoadApplication(new App(new AndroidInitializer()));
         }
     }

@@ -68,7 +68,9 @@
 
                 <RefreshView Grid.Row="2" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}">
                     <ScrollView>
-                        <CollectionView ItemsSource="{Binding TodoItems}" EmptyView="No items to display" x:Name="collectionV">
+                        <CollectionView x:Name="collectionV" 
+                                        ItemsSource="{Binding TodoItems}" 
+                                        EmptyView="No items to display">
                             <CollectionView.ItemsLayout>
                                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
                             </CollectionView.ItemsLayout>
@@ -108,7 +110,13 @@
                                                        FontSize="Micro" 
                                                        TextColor="{StaticResource secondaryText}" />
                                             </StackLayout>
-                                            <CheckBox x:Name="check" Grid.Column="2" Color="{StaticResource primary}" IsChecked="{Binding Completed, Mode=TwoWay}" HorizontalOptions="EndAndExpand" VerticalOptions="Center">
+                                            <CheckBox x:Name="check" 
+                                                      Grid.Column="2" 
+                                                      Color="{StaticResource primary}"
+                                                      IsChecked="{Binding Completed, Mode=TwoWay}"
+                                                      IsVisible="{Binding Path=BindingContext.IsCheckBoxVisible, Source={x:Reference TodosView}}"
+                                                      HorizontalOptions="EndAndExpand" 
+                                                      VerticalOptions="Center">
                                                 <CheckBox.Behaviors>
                                                     <behaviors:EventToCommandBehavior EventName="CheckedChanged"
                                                                                       Command="{Binding Path=BindingContext.CheckedChangedCommand, Source={x:Reference TodosView}}"

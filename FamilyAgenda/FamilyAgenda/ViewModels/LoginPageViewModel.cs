@@ -46,8 +46,11 @@ namespace FamilyAgenda.ViewModels
             //CreateUsers();
 
             var users = await FirebaseDbService.GetUsersAsync();
-            Users.Clear();
-            users.ForEach(Users.Add);
+            if (users != null)
+            {
+                Users.Clear();
+                users.ForEach(Users.Add);
+            }
         }
 
         private async void SelectUser()

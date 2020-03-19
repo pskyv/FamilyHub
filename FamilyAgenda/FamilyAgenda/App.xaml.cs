@@ -7,6 +7,8 @@ using Xamarin.Forms.Xaml;
 using FamilyAgenda.Utils;
 using FamilyAgenda.Services;
 using FamilyAgenda.Models;
+using Xamarin.Essentials;
+using System;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace FamilyAgenda
@@ -30,9 +32,19 @@ namespace FamilyAgenda
 
             InitializeComponent();
 
+            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+
             MainPage = new AppShell();
 
             //await NavigationService.NavigateAsync("NavigationPage/MainPage");
+        }
+
+        private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        {
+            if (e.NetworkAccess != NetworkAccess.Internet)
+            {
+                Helpers.ShowToastMessage(Constants.ConnectivityLostMsg);
+            }
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Xamarin.Essentials;
 
 namespace FamilyAgenda.Services
 {
@@ -100,6 +101,12 @@ namespace FamilyAgenda.Services
 
         public async Task<List<User>> GetUsersAsync()
         {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                Helpers.ShowToastMessage(Constants.NoConnectionMsg);
+                return null;
+            }
+
             try
             {
                 var users = await _firebaseClient.Child("users")
@@ -140,6 +147,12 @@ namespace FamilyAgenda.Services
 
         public async Task<List<TodoItem>> GetTodoItemsAsync()
         {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                Helpers.ShowToastMessage(Constants.NoConnectionMsg);
+                return null;
+            }
+
             TodoItem todoItem = null;
             try
             {
@@ -181,6 +194,12 @@ namespace FamilyAgenda.Services
 
         public async Task<bool> AddTodoItemAsync(TodoItem todoItem)
         {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                Helpers.ShowToastMessage(Constants.CouldNotPerformActionMsg);
+                return false;
+            }
+
             try
             {
                 await _firebaseClient.Child("todos")
@@ -196,6 +215,12 @@ namespace FamilyAgenda.Services
 
         public async Task<bool> UpdateTodoItemAsync(TodoItem todoItem)
         {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                Helpers.ShowToastMessage(Constants.CouldNotPerformActionMsg);
+                return false;
+            }
+
             try
             {
                 await _firebaseClient.Child("todos")
@@ -212,6 +237,12 @@ namespace FamilyAgenda.Services
 
         public async Task<bool> DeleteItemAsync(string key)
         {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                Helpers.ShowToastMessage(Constants.CouldNotPerformActionMsg);
+                return false;
+            }
+
             try
             {
                 await _firebaseClient.Child("todos")
@@ -230,6 +261,12 @@ namespace FamilyAgenda.Services
         #region messages
         public async Task<List<Message>> GetMessagesAsync()
         {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                Helpers.ShowToastMessage(Constants.NoConnectionMsg);
+                return null;
+            }
+
             try
             {
                 var messages = await _firebaseClient.Child("messages")
@@ -252,6 +289,12 @@ namespace FamilyAgenda.Services
 
         public async Task<bool> AddMessageAsync(Message message)
         {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                Helpers.ShowToastMessage(Constants.CouldNotPerformActionMsg);
+                return false;
+            }
+
             try
             {
                 await _firebaseClient.Child("messages")
@@ -269,6 +312,12 @@ namespace FamilyAgenda.Services
         #region events
         public async Task<List<SchedulerEvent>> GetEventsAsync()
         {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                Helpers.ShowToastMessage(Constants.NoConnectionMsg);
+                return null;
+            }
+
             try
             {
                 var events = await _firebaseClient.Child("events")
@@ -291,6 +340,12 @@ namespace FamilyAgenda.Services
 
         public async Task<bool> AddEventAsync(SchedulerEvent schedulerEvent)
         {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                Helpers.ShowToastMessage(Constants.CouldNotPerformActionMsg);
+                return false;
+            }
+
             try
             {
                 await _firebaseClient.Child("events")
@@ -304,5 +359,6 @@ namespace FamilyAgenda.Services
             return true;
         }
         #endregion
+
     }
 }

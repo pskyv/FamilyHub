@@ -65,7 +65,7 @@ namespace FamilyAgenda.ViewModels
         private async void GetMessagesAsync()
         {
             var messages = await FirebaseDbService.GetMessagesAsync();
-            if (Messages.Count == messages.Count)
+            if (messages == null || Messages.Count == messages.Count)
             {
                 return;
             }
