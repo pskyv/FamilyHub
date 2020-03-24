@@ -20,9 +20,7 @@ namespace FamilyAgenda.ViewModels
         private bool _isCheckBoxVisible;
 
         public TodosPageViewModel(INavigationService navigationService, IFirebaseDbService firebaseDbService) : base(navigationService, firebaseDbService)
-        {
-            GetItemsAsync();
-            
+        {                        
             AddNewItemCommand = new DelegateCommand(AddNewItemAsync);
             CheckedChangedCommand = new DelegateCommand<TodoItem>(UpdateItemAsync);
             RefreshCommand = new DelegateCommand(RefreshItemsAsync);
@@ -40,6 +38,8 @@ namespace FamilyAgenda.ViewModels
 
             IsCheckBoxVisible = Connectivity.NetworkAccess == NetworkAccess.Internet;
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+
+            GetItemsAsync();
         }        
 
         public TodoItem NewTodoItem

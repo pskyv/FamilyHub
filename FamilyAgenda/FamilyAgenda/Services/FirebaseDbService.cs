@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Essentials;
+using MonkeyCache.SQLite;
 
 namespace FamilyAgenda.Services
 {
@@ -18,6 +19,8 @@ namespace FamilyAgenda.Services
         public FirebaseDbService()
         {
             _firebaseClient = new FirebaseClient(Constants.FirebaseDataBaseUrl);
+            Barrel.ApplicationId = "FamilyHub";
+
             ListenOnUsersChanges();
             ListenOnTodoItemsChanges();
             ListenOnMessagesChanges();
@@ -150,6 +153,11 @@ namespace FamilyAgenda.Services
             if (Connectivity.NetworkAccess != NetworkAccess.Internet)
             {
                 Helpers.ShowToastMessage(Constants.NoConnectionMsg);
+                if (!Barrel.Current.IsExpired(key: "todos"))
+                {
+                    return Barrel.Current.Get<List<TodoItem>>(key: "todos").OrderByDescending(t => t.CreatedAtTimestamp).ToList();
+                }
+
                 return null;
             }
 
@@ -184,6 +192,7 @@ namespace FamilyAgenda.Services
                     }
                 }
 
+                Barrel.Current.Add(key: "todos", data: todosList, expireIn: TimeSpan.FromDays(7));
                 return todosList.OrderByDescending(t => t.CreatedAtTimestamp).ToList();
             }
             catch (Exception ex)
@@ -264,6 +273,11 @@ namespace FamilyAgenda.Services
             if (Connectivity.NetworkAccess != NetworkAccess.Internet)
             {
                 Helpers.ShowToastMessage(Constants.NoConnectionMsg);
+                if (!Barrel.Current.IsExpired(key: "messages"))
+                {
+                    return Barrel.Current.Get<List<Message>>(key: "messages");
+                }
+
                 return null;
             }
 
@@ -279,6 +293,7 @@ namespace FamilyAgenda.Services
                     messagesList.Add(msg.Object);
                 }
 
+                Barrel.Current.Add(key: "messages", data: messagesList, expireIn: TimeSpan.FromDays(7));
                 return messagesList;
             }
             catch (Exception ex)
@@ -315,6 +330,11 @@ namespace FamilyAgenda.Services
             if (Connectivity.NetworkAccess != NetworkAccess.Internet)
             {
                 Helpers.ShowToastMessage(Constants.NoConnectionMsg);
+                if (!Barrel.Current.IsExpired(key: "events"))
+                {
+                    return Barrel.Current.Get<List<SchedulerEvent>>(key: "events");
+                }
+
                 return null;
             }
 
@@ -330,6 +350,7 @@ namespace FamilyAgenda.Services
                     eventsList.Add(schEvent.Object);
                 }
 
+                Barrel.Current.Add(key: "events", data: eventsList, expireIn: TimeSpan.FromDays(7));
                 return eventsList;
             }
             catch (Exception ex)
