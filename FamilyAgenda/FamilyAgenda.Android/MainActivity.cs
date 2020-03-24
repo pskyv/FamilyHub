@@ -23,6 +23,7 @@ namespace FamilyAgenda.Droid
             Forms.SetFlags("SwipeView_Experimental");
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+            global::Xamarin.Forms.FormsMaterial.Init(this, bundle);
 
             UserDialogs.Init(this);
 
