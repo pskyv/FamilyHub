@@ -39,6 +39,12 @@ namespace FamilyAgenda
             //await NavigationService.NavigateAsync("NavigationPage/MainPage");
         }
 
+        protected override void OnStart()
+        {
+            base.OnStart();
+            PushNotificationsService.ConfigureFirebasePushNotifications();
+        }
+
         private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
             if (e.NetworkAccess != NetworkAccess.Internet)

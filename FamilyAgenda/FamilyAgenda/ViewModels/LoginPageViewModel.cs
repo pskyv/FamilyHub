@@ -1,6 +1,7 @@
 ﻿using FamilyAgenda.Models;
 using FamilyAgenda.Services;
 using Firebase.Storage;
+using Plugin.FirebasePushNotification;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -62,6 +63,14 @@ namespace FamilyAgenda.ViewModels
 
             App.ApplicationUser = SelectedUser;
             Preferences.Set("user", SelectedUser.Username);
+            
+            var topic = "Sofi";
+            if (SelectedUser.Username == "Sofi")
+            {
+                topic = "Panos";
+            }
+            CrossFirebasePushNotification.Current.Subscribe(topic);
+
             await Shell.Current.GoToAsync("//main");
         }
 

@@ -69,6 +69,7 @@ namespace FamilyAgenda.ViewModels
 
             if (await FirebaseDbService.AddEventAsync(SchedulerEvent))
             {
+                PushNotificationsService.SendNotificationAsync("Event added: " + Subject, SchedulerEvent.Username);
                 await NavigationService.GoBackAsync();
             }
         }

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "91173277938",
+    "firebase_url": "https://familyagenda-9dcc8.firebaseio.com",
+    "project_id": "familyagenda-9dcc8",
+    "storage_bucket": "familyagenda-9dcc8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91173277938:android:cb03d2ffd5d9379662406b",
+        "android_client_info": {
+          "package_name": "com.skydev.familyhub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "91173277938-hrefaot1a0e611nt0ckp8aadqofmdvgn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHP8-mX5oRZ6NqAlFhm4Vzs8BwX4CcM6I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "91173277938-hrefaot1a0e611nt0ckp8aadqofmdvgn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -109,6 +109,7 @@ namespace FamilyAgenda.ViewModels
             if (await FirebaseDbService.AddTodoItemAsync(NewTodoItem))
             {
                 TodoContent = "";
+                PushNotificationsService.SendNotificationAsync("Todo item added: " + NewTodoItem.Content, NewTodoItem.Username);
             }
         }
 
@@ -119,7 +120,13 @@ namespace FamilyAgenda.ViewModels
                 return;
             }
 
-            await FirebaseDbService.UpdateTodoItemAsync(todoItem);
+            if (await FirebaseDbService.UpdateTodoItemAsync(todoItem))
+            {
+                if (todoItem.Completed)
+                {                  
+                    PushNotificationsService.SendNotificationAsync("Todo item completed: " + todoItem.Content, Preferences.Get("user", ""));
+                }
+            }
         }
 
         private async void RefreshItemsAsync()

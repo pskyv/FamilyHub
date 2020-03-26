@@ -1,7 +1,9 @@
 ﻿using Acr.UserDialogs;
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Plugin.FirebasePushNotification;
 using Prism;
 using Prism.Ioc;
 using Xamarin.Forms;
@@ -28,6 +30,14 @@ namespace FamilyAgenda.Droid
             UserDialogs.Init(this);
 
             LoadApplication(new App(new AndroidInitializer()));
+
+            FirebasePushNotificationManager.ProcessIntent(this, Intent);
+        }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
+            FirebasePushNotificationManager.ProcessIntent(this, intent);
         }
     }
 

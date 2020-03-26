@@ -8,8 +8,11 @@ namespace FamilyAgenda.Utils
     {
         #region firebase
         public const string FirebaseDataBaseUrl = "https://familyagenda-9dcc8.firebaseio.com/";
+        public const string FirebaseFCMServerKey = "AAAAFTpZ0PI:APA91bFV6dM_NIQlNWSTIFyXHPrs-8k4AKC7gvIHaBrfliWBqQvbV63gSQb6Wu76zXgEEm61XXq1bWNIzylbfF99srCNyC5ZD22rsD0GNSropgTI-xEE5f6yltZ7RwfBAsLSOdrth40m";
+        public const string FirebaseBasePostUrl = "https://fcm.googleapis.com/fcm/";
         #endregion
 
+        //syncfusion
         public const string Old_SyncfusionLicenseKey = "MjI0MzBAMzEzNjJlMzIyZTMwTzdkSW5TOXhCeVR6WUVqOStUZ1c2c3FrK2RzZDJ4V01ENTN4dGpkK0dWdz0=;" +
                                                        "MjI0MzFAMzEzNjJlMzIyZTMwQzE4bGx6Wmk0ejdzYlRZUEN5bUljRVltS2lLRU40OHhSMnZIRWFZLzR4bz0=;" +
                                                        "MjI0MzJAMzEzNjJlMzIyZTMwZFMzdWF2ZVpHd3Bhak1JdWtweGJxSHBlZmJwSi8zQjhudkRxcjZVcEFBMD0=;" +
@@ -22,6 +25,7 @@ namespace FamilyAgenda.Utils
 
         public const string SyncfusionLicenseKey = "MjE2ODE5QDMxMzcyZTM0MmUzMGtmZUF5WWZsa2FzYXlac0JTNUp0NzlvenpYSTAvU0lmSU1LNHNPYzJxaGc9";
 
+        //toast messages
         public const string ConnectivityLostMsg = "No internet connection";
         public const string NoConnectionMsg = "Couldn't refresh items, check your connection";
         public const string CouldNotPerformActionMsg = "Couldn't perform action, check your connection";
