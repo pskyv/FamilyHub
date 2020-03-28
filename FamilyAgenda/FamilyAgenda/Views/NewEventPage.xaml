@@ -4,8 +4,9 @@
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="FamilyAgenda.Views.NewEventPage">
-
-    <StackLayout Padding="30,20" Spacing="20">
+    
+    <StackLayout Padding="30,20" 
+                 Spacing="20">
         <Button Text="&#xf00d;"
                 FontSize="Large"
                 FontFamily="{StaticResource FontAwesomeSolid}"
@@ -14,26 +15,24 @@
                 Margin="0,0,-30,0"
                 Command="{Binding CancelCommand}" />
 
-        <Frame Padding="10" HasShadow="True">
+        <Frame Padding="20" 
+               HasShadow="True"               
+               Visual="Material">
             <StackLayout>
                 <Label Text="Subject" FontSize="Subtitle" FontAttributes="Bold" TextColor="{StaticResource primaryText}" />
                 <Entry Placeholder="Enter subject..." Text="{Binding Subject}" />
-            </StackLayout>
-        </Frame>
-
-        <Frame Padding="10" HasShadow="True">
-            <StackLayout>
+                <BoxView Margin="0,20" />
                 <Label Text="Start" FontSize="Subtitle" FontAttributes="Bold" TextColor="{StaticResource primaryText}" />
-                <DatePicker Date="{Binding SchedulerEvent.StartDate}" Format="dd/MM/yyyy" HorizontalOptions="Start" WidthRequest="105" />
-                <TimePicker Time="{Binding SchedulerEvent.StartTime}" Format="HH:mm" HorizontalOptions="Start" WidthRequest="105" />
-            </StackLayout>
-        </Frame>
-
-        <Frame Padding="10" HasShadow="True">
-            <StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <DatePicker Date="{Binding SchedulerEvent.StartDate}" Format="dd/MM/yyyy" />
+                    <TimePicker Time="{Binding SchedulerEvent.StartTime}" Format="HH:mm" />
+                </StackLayout>
+                <BoxView Margin="0,20" />
                 <Label Text="End" FontSize="Subtitle" FontAttributes="Bold" TextColor="{StaticResource primaryText}" />
-                <DatePicker Date="{Binding SchedulerEvent.EndDate}" Format="dd/MM/yyyy" HorizontalOptions="Start" />
-                <TimePicker Time="{Binding SchedulerEvent.EndTime}" Format="HH:mm" HorizontalOptions="Start" WidthRequest="105" />
+                <StackLayout Orientation="Horizontal">
+                    <DatePicker Date="{Binding SchedulerEvent.EndDate}" Format="dd/MM/yyyy" HorizontalOptions="Start" />
+                    <TimePicker Time="{Binding SchedulerEvent.EndTime}" Format="HH:mm" HorizontalOptions="Start" />
+                </StackLayout>
             </StackLayout>
         </Frame>
 
