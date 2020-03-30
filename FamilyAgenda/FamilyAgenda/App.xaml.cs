@@ -56,12 +56,14 @@ namespace FamilyAgenda
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
+            containerRegistry.RegisterForNavigation<SingUpPage, SingUpPageViewModel>();
             containerRegistry.RegisterForNavigation<TodosPage, TodosPageViewModel>();
             containerRegistry.RegisterForNavigation<ChatPage, ChatPageViewModel>();
             containerRegistry.RegisterForNavigation<SchedulerPage, SchedulerPageViewModel>();
             containerRegistry.RegisterForNavigation<NewEventPage, NewEventPageViewModel>();
 
-            containerRegistry.RegisterSingleton(typeof(IFirebaseDbService), typeof(FirebaseDbService));            
+            containerRegistry.RegisterSingleton(typeof(IFirebaseDbService), typeof(FirebaseDbService));
+            containerRegistry.RegisterSingleton(typeof(IFirebaseAuthenticationService), typeof(FirebaseAuthenticationService));            
         }
     }
 }

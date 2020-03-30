@@ -9,12 +9,6 @@ namespace FamilyAgenda.Services
 {
     public interface IFirebaseDbService
     {
-        Task<bool> FindUserById(string userId);
-
-        Task<bool> AddUserAsync(User user);
-
-        Task<List<User>> GetUsersAsync();
-
         Task<List<TodoItem>> GetTodoItemsAsync();
 
         Task<bool> AddTodoItemAsync(TodoItem todoItem);

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Essentials;
 using MonkeyCache.SQLite;
+using Firebase.Auth;
 
 namespace FamilyAgenda.Services
 {
@@ -18,30 +19,19 @@ namespace FamilyAgenda.Services
         private FirebaseClient _firebaseClient;
         public FirebaseDbService()
         {
-            _firebaseClient = new FirebaseClient(Constants.FirebaseDataBaseUrl);
             Barrel.ApplicationId = "FamilyHub";
 
-            ListenOnUsersChanges();
+            _firebaseClient = new FirebaseClient(Constants.FirebaseDataBaseUrl, new FirebaseOptions
+            {
+                AuthTokenAsyncFactory = () => Task.FromResult(Barrel.Current.Get<FirebaseAuthLink>("auth").FirebaseToken)
+            });
+
             ListenOnTodoItemsChanges();
             ListenOnMessagesChanges();
             ListenOnEventsChanges();
         }
 
         #region listeners
-        private void ListenOnUsersChanges()
-        {
-            try
-            {
-                var observable = _firebaseClient.Child("users")
-                                                .AsObservable<User>()
-                                                .Subscribe(d => MessagingCenter.Send(this, "UserChangeEvent"));
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-
         private void ListenOnTodoItemsChanges()
         {
             try
@@ -82,67 +72,6 @@ namespace FamilyAgenda.Services
             {
 
             }
-        }
-        #endregion
-
-        #region users
-        public async Task<bool> FindUserById(string userId)
-        {
-            try
-            {
-                var user = await _firebaseClient.Child("users")
-                                                .Child(userId)
-                                                .OnceSingleAsync<User>();
-
-                return user != null;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
-
-        public async Task<List<User>> GetUsersAsync()
-        {
-            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
-            {
-                Helpers.ShowToastMessage(Constants.NoConnectionMsg);
-                return null;
-            }
-
-            try
-            {
-                var users = await _firebaseClient.Child("users")
-                                                 .OnceAsync<User>();
-
-                var usersList = new List<User>();
-
-                foreach (var user in users)
-                {
-                    usersList.Add(user.Object);
-                }
-
-                return usersList;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
-
-        public async Task<bool> AddUserAsync(User user)
-        {
-            try
-            {
-                await _firebaseClient.Child("users")
-                                     .PostAsync(user);
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
-            return true;
         }
         #endregion
 

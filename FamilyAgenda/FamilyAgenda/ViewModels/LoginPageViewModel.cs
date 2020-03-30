@@ -1,6 +1,8 @@
 ﻿using FamilyAgenda.Models;
 using FamilyAgenda.Services;
+using Firebase.Auth;
 using Firebase.Storage;
+using MonkeyCache.SQLite;
 using Plugin.FirebasePushNotification;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -16,113 +18,87 @@ using Xamarin.Forms;
 
 namespace FamilyAgenda.ViewModels
 {
-    public class LoginPageViewModel : ViewModelBase
+    public class LoginPageViewModel : BindableBase
     {
-        private User _selectedUser;
-        public LoginPageViewModel(INavigationService navigationService, IFirebaseDbService firebaseDbService) : base(navigationService, firebaseDbService)
+        private readonly IFirebaseAuthenticationService _authService;
+        private readonly INavigationService _navigationService;
+        private string _email;
+        private string _password;
+
+        public LoginPageViewModel(INavigationService navigationService, IFirebaseAuthenticationService authService)
         {
-            SelectUserCommand = new DelegateCommand(SelectUser);
+            _authService = authService;
+            _navigationService = navigationService;
+
+            Barrel.ApplicationId = "FamilyHub";
+
+            LoginCommand = new DelegateCommand(LoginAsync);
+            NavigateToSignUpPageCommand = new DelegateCommand(NavigateToSignUpPage);
+
             Initialize();
-        }
+        }        
 
-        public User SelectedUser 
+        public string Email 
         { 
-            get { return _selectedUser; }
-            set { SetProperty(ref _selectedUser, value); }
+            get { return _email; }
+            set { SetProperty(ref _email, value); }
         }
 
-        public ObservableCollection<User> Users { get; set; } = new ObservableCollection<User>();
+        public string Password
+        {
+            get { return _password; }
+            set { SetProperty(ref _password, value); }
+        }
 
-        public DelegateCommand SelectUserCommand { get; }
+        public DelegateCommand LoginCommand { get; }
+
+        public DelegateCommand NavigateToSignUpPageCommand { get; }
 
         private async void Initialize()
         {
-            var currentUser = Preferences.Get("user", "");
-            if (!string.IsNullOrEmpty(currentUser))
+            if(Barrel.Current.Exists("auth"))
             {
-                await Shell.Current.GoToAsync("//main");
-                return;
-            }
+                var auth = Barrel.Current.Get<FirebaseAuthLink>("auth");
+                if(!auth.IsExpired())
+                {
+                    await Shell.Current.GoToAsync("///main");
+                }
+                else
+                {                    
+                    var refreshAuth = await _authService.RefreshToken(auth);
+                    if(refreshAuth != null)
+                    {
+                        Barrel.Current.Add(key: "auth", data: refreshAuth, expireIn: TimeSpan.FromSeconds(refreshAuth.ExpiresIn));                        
+                        await Shell.Current.GoToAsync("///main");
+                    }
+                }
+            }                        
+        }
 
-            //CreateUsers();
-
-            var users = await FirebaseDbService.GetUsersAsync();
-            if (users != null)
+        private async void LoginAsync()
+        {
+            var auth = await _authService.SignIn(Email, Password);            
+            if (auth != null)
             {
-                Users.Clear();
-                users.ForEach(Users.Add);
+                Barrel.Current.Add(key: "auth", data: auth, expireIn: TimeSpan.FromSeconds(auth.ExpiresIn));
+                Preferences.Set("user", auth.User.DisplayName);
+
+                var topic = "Sofi";
+                if (auth.User.DisplayName == "Sofi")
+                {
+                    topic = "Panos";
+                }
+                CrossFirebasePushNotification.Current.Subscribe(topic);
+
+                await Shell.Current.GoToAsync("///main");
             }
         }
 
-        private async void SelectUser()
+        private async void NavigateToSignUpPage()
         {
-            if (SelectedUser == null)
-            {
-                return;
-            }
-
-            App.ApplicationUser = SelectedUser;
-            Preferences.Set("user", SelectedUser.Username);
-            
-            var topic = "Sofi";
-            if (SelectedUser.Username == "Sofi")
-            {
-                topic = "Panos";
-            }
-            CrossFirebasePushNotification.Current.Subscribe(topic);
-
-            await Shell.Current.GoToAsync("//main");
+            //await Shell.Current.GoToAsync("login/register");
+            await _navigationService.NavigateAsync("SingUpPage");
         }
-
-        private async void CreateUsers()
-        {
-            try
-            {
-                //var stream1 = await FileSystem.OpenAppPackageFileAsync("panos_profile.jpg");
-
-                //// Constructr FirebaseStorage, path to where you want to upload the file and Put it there
-                //var task = new FirebaseStorage("gs://familyagenda-9dcc8.appspot.com")
-                //    .Child("photos")
-                //    .Child("random")
-                //    .Child("panos_profile.jpg")
-                //    .PutAsync(stream1);
-
-                //// await the task to wait until upload completes and get the download url
-                //var downloadUrl1 = await task;
-
-                //var stream2 = await FileSystem.OpenAppPackageFileAsync("sofaki.jpg");
-
-                //// Constructr FirebaseStorage, path to where you want to upload the file and Put it there
-                //task = new FirebaseStorage("gs://familyagenda-9dcc8.appspot.com")
-                //    .Child("photos")
-                //    .Child("random")
-                //    .Child("sofaki.jpg")
-                //    .PutAsync(stream2);
-
-                //// await the task to wait until upload completes and get the download url
-                //var downloadUrl2 = await task;
-
-                await FirebaseDbService.AddUserAsync(new User
-                {
-                    Username = "Panos",
-                    Password = "panos",
-                    Email = "panos.skydev@gmail.com",
-                    ProfilePhoto = ImageSource.FromUri(new Uri("gs://familyagenda-9dcc8.appspot.com/panos_profile.jpg"))
-                });
-
-                await FirebaseDbService.AddUserAsync(new User
-                {
-                    Username = "Sofi",
-                    Password = "sofi",
-                    Email = "sofi.douzeni@gmail.com",
-                    ProfilePhoto = ImageSource.FromUri(new Uri("gs://familyagenda-9dcc8.appspot.com/sofaki.jpg"))
-                });
                 
-            }
-            catch (Exception ex)
-            {
-                
-            }
-        }        
     }
 }

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="FamilyAgenda.Views.SingUpPage"
+             Shell.NavBarIsVisible="False" 
+             Shell.FlyoutBehavior="Disabled"
+             Shell.PresentationMode="ModalAnimated"
+             Visual="Material">
+
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackLayout Padding="20,50" Spacing="0" BackgroundColor="{StaticResource primary}">
+            <StackLayout Orientation="Vertical" HorizontalOptions="Center">
+                <Image Source="logo" HeightRequest="80" />
+                <Label Text="FamilyHub"
+                       TextColor="White"
+                       FontSize="Title"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center"/>
+            </StackLayout>
+        </StackLayout>
+
+        <Frame Grid.Row="1" 
+               CornerRadius="25"
+               Margin="0,-20,0,-20"    
+               Padding="30,30">
+            <StackLayout>
+                <Entry Text="{Binding Username}" Placeholder="username..." />
+                <Entry Text="{Binding Email}" Placeholder="email..." />
+                <Entry Text="{Binding Password}" Placeholder="password..." IsPassword="True" />
+                <Button Text="Create user" 
+                        BackgroundColor="{StaticResource primary}" 
+                        Command="{Binding SignUpCommand}"
+                        Margin="0,50,0,0" />
+            </StackLayout>
+
+        </Frame>
+    </Grid>
+
+</ContentPage>
