@@ -84,18 +84,18 @@
       <Version>3.1.6</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.Buttons">
-      <Version>17.4.0.55</Version>
+      <Version>18.1.0.42</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.SfChat">
-      <Version>17.4.0.55</Version>
+      <Version>18.1.0.42</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.SfSchedule">
-      <Version>17.4.0.55</Version>
+      <Version>18.1.0.42</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Essentials">
       <Version>1.5.2</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="4.5.0.495" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.530" />
     <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.v4" Version="28.0.0.3" />
@@ -104,7 +104,7 @@
     <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="28.0.0.3" />
     <PackageReference Include="Prism.Unity.Forms" Version="7.2.0.1422" />
     <PackageReference Include="Xamarin.Forms.Visual.Material">
-      <Version>4.5.0.495</Version>
+      <Version>4.5.0.530</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.GooglePlayServices.Basement">
       <Version>71.1620.0</Version>
