@@ -10,6 +10,7 @@
              x:Class="FamilyAgenda.Views.TodosPage"
              x:Name="TodosView"
              Shell.NavBarIsVisible="False"
+             Shell.FlyoutBehavior="Flyout"
              Visual="Material">
 
     <ContentPage.Resources>

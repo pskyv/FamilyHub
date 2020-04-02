@@ -6,7 +6,8 @@
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="FamilyAgenda.Views.ChatPage"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="False"
+             Shell.FlyoutBehavior="Flyout">
 
     <ContentPage.Behaviors>
         <behaviors:ChatPageBehavior />

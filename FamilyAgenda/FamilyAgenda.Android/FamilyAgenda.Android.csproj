@@ -84,13 +84,13 @@
       <Version>3.1.6</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.Buttons">
-      <Version>18.1.0.42</Version>
+      <Version>17.4.0.55</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.SfChat">
-      <Version>18.1.0.42</Version>
+      <Version>17.4.0.55</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.SfSchedule">
-      <Version>18.1.0.42</Version>
+      <Version>17.4.0.55</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Essentials">
       <Version>1.5.2</Version>

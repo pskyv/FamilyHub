@@ -6,7 +6,8 @@
        xmlns:views="clr-namespace:FamilyAgenda.Views"     
        mc:Ignorable="d"
        x:Class="FamilyAgenda.AppShell" 
-       Visual="Material">
+       Visual="Material"
+       FlyoutBackgroundColor="{StaticResource primaryLight}">
 
     <Shell.Resources>
         <Style x:Key="BaseStyle" TargetType="Element">
@@ -22,11 +23,47 @@
         </Style>
     </Shell.Resources>
 
+    <Shell.FlyoutHeader>
+        <StackLayout Orientation="Horizontal" BackgroundColor="{StaticResource primary}" Padding="20,40">
+            <Frame HeightRequest="60"
+                   WidthRequest="60"
+                   CornerRadius="30"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Start"
+                   Padding="0">
+                <Image Source="logo" 
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"  />
+            </Frame>
+            <Label Text="FamilyHub" FontSize="Title" TextColor="White" FontAttributes="Bold" VerticalOptions="Center" Margin="20,0,0,0" />
+        </StackLayout>
+    </Shell.FlyoutHeader>
+
     <ShellItem Route="login">
         <ShellContent ContentTemplate="{DataTemplate views:LoginPage}" />
     </ShellItem>
 
-    <TabBar Route="main">
+    <FlyoutItem Title="Main" Route="main">
+        <ShellContent Title="Todos" ContentTemplate="{DataTemplate views:TodosPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf0ae;" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent Title="Chat" ContentTemplate="{DataTemplate views:ChatPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf4ad;" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent Title="Scheduler" ContentTemplate="{DataTemplate views:SchedulerPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf073;" />
+            </ShellContent.Icon>
+        </ShellContent>
+    </FlyoutItem>
+
+    <MenuItem Text="Logout" />
+
+    <!--<TabBar Route="main">
         <Tab Title="Todos">
             <Tab.Icon>
                 <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf0ae;" />
@@ -45,5 +82,5 @@
             </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate views:SchedulerPage}" />
         </Tab>
-    </TabBar>
+    </TabBar>-->
 </Shell>

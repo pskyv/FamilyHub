@@ -6,7 +6,8 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              xmlns:cv="clr-namespace:FamilyAgenda.Converters"
              x:Class="FamilyAgenda.Views.SchedulerPage"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="False"
+             Shell.FlyoutBehavior="Flyout">
 
     <ContentPage.Resources>
         <ResourceDictionary>
