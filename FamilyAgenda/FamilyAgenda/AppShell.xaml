@@ -44,6 +44,9 @@
     </ShellItem>
 
     <FlyoutItem Title="Main" Route="main">
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf0c9;" Color="Black" />
+        </FlyoutItem.Icon>
         <ShellContent Title="Todos" ContentTemplate="{DataTemplate views:TodosPage}">
             <ShellContent.Icon>
                 <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf0ae;" />
@@ -61,7 +64,11 @@
         </ShellContent>
     </FlyoutItem>
 
-    <MenuItem Text="Logout" />
+    <MenuItem Text="Logout">
+        <MenuItem.IconImageSource>
+            <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf2f5;" Color="Black" />
+        </MenuItem.IconImageSource>
+    </MenuItem>
 
     <!--<TabBar Route="main">
         <Tab Title="Todos">
