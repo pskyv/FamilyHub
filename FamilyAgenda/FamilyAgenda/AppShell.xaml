@@ -39,6 +39,10 @@
         </StackLayout>
     </Shell.FlyoutHeader>
 
+    <ShellItem Route="loader">
+        <ShellContent ContentTemplate="{DataTemplate views:LoadingPage}" />
+    </ShellItem>
+
     <ShellItem Route="login">
         <ShellContent ContentTemplate="{DataTemplate views:LoginPage}" />
     </ShellItem>

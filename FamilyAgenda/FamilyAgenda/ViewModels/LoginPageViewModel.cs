@@ -34,8 +34,6 @@ namespace FamilyAgenda.ViewModels
 
             LoginCommand = new DelegateCommand(LoginAsync);
             NavigateToSignUpPageCommand = new DelegateCommand(NavigateToSignUpPage);
-
-            Initialize();
         }        
 
         public string Email 
@@ -53,27 +51,6 @@ namespace FamilyAgenda.ViewModels
         public DelegateCommand LoginCommand { get; }
 
         public DelegateCommand NavigateToSignUpPageCommand { get; }
-
-        private async void Initialize()
-        {
-            if(Barrel.Current.Exists("auth"))
-            {
-                var auth = Barrel.Current.Get<FirebaseAuthLink>("auth");
-                if(!auth.IsExpired())
-                {
-                    await Shell.Current.GoToAsync("///main");
-                }
-                else
-                {                    
-                    var refreshAuth = await _authService.RefreshToken(auth);
-                    if(refreshAuth != null)
-                    {
-                        Barrel.Current.Add(key: "auth", data: refreshAuth, expireIn: TimeSpan.FromSeconds(refreshAuth.ExpiresIn));                        
-                        await Shell.Current.GoToAsync("///main");
-                    }
-                }
-            }                        
-        }
 
         private async void LoginAsync()
         {
