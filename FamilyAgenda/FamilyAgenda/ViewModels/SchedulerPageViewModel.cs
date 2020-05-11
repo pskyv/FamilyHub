@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace FamilyAgenda.ViewModels
@@ -14,19 +15,21 @@ namespace FamilyAgenda.ViewModels
     public class SchedulerPageViewModel : ViewModelBase
     {
         private DateTime _selectedDate;
+        private DelegateCommand _getEventsCommand;
+        private DelegateCommand _addSchedulerEventCommand;
+
         public SchedulerPageViewModel(INavigationService navigationService, IFirebaseDbService firebaseDbService) : base(navigationService, firebaseDbService)
         {
-            AddSchedulerEventCommand = new DelegateCommand(AddSchedulerEventAsync);
             MessagingCenter.Subscribe<FirebaseDbService>(this, "SchedulerChangeEvent", (sender) =>
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    GetEventsAsync();
+                    GetEventsCommand.Execute();
                 });
             });
 
-            GetEventsAsync();
             SelectedDate = DateTime.Today;
+            GetEventsCommand.Execute();            
         }    
         
         public DateTime SelectedDate
@@ -37,9 +40,11 @@ namespace FamilyAgenda.ViewModels
 
         public ObservableCollection<SchedulerEvent> Events { get; set; } = new ObservableCollection<SchedulerEvent>();
 
-        public DelegateCommand AddSchedulerEventCommand { get; }
+        public DelegateCommand AddSchedulerEventCommand => _addSchedulerEventCommand ?? (_addSchedulerEventCommand = new DelegateCommand(async () => await AddSchedulerEventAsync()));
 
-        private async void GetEventsAsync()
+        public DelegateCommand GetEventsCommand => _getEventsCommand ?? (_getEventsCommand = new DelegateCommand(async () => await GetEventsAsync()));
+
+        private async Task GetEventsAsync()
         {
             try
             {
@@ -58,7 +63,7 @@ namespace FamilyAgenda.ViewModels
             }
         }
 
-        private async void AddSchedulerEventAsync()
+        private async Task AddSchedulerEventAsync()
         {
             await NavigationService.NavigateAsync("NewEventPage", useModalNavigation: true);
         }

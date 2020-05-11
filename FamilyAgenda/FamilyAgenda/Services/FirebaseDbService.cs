@@ -11,6 +11,7 @@ using Xamarin.Forms;
 using Xamarin.Essentials;
 using MonkeyCache.SQLite;
 using Firebase.Auth;
+using System.Threading;
 
 namespace FamilyAgenda.Services
 {
@@ -130,69 +131,43 @@ namespace FamilyAgenda.Services
             }
         }
 
-        public async Task<bool> AddTodoItemAsync(TodoItem todoItem)
+        public Task<FirebaseObject<TodoItem>> AddTodoItemAsync(TodoItem todoItem)
         {
             if (Connectivity.NetworkAccess != NetworkAccess.Internet)
             {
                 Helpers.ShowToastMessage(Constants.CouldNotPerformActionMsg);
-                return false;
+                FirebaseObject<TodoItem> obj = null;
+                return null; //Task.FromResult(obj);
             }
 
-            try
-            {
-                await _firebaseClient.Child("todos")
-                                     .PostAsync(todoItem);
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
-            return true;
+            return _firebaseClient.Child("todos")
+                                  .PostAsync(todoItem);
         }
 
-        public async Task<bool> UpdateTodoItemAsync(TodoItem todoItem)
+        public Task UpdateTodoItemAsync(TodoItem todoItem)
         {
             if (Connectivity.NetworkAccess != NetworkAccess.Internet)
             {
                 Helpers.ShowToastMessage(Constants.CouldNotPerformActionMsg);
-                return false;
+                return null;
             }
 
-            try
-            {
-                await _firebaseClient.Child("todos")
-                                     .Child(todoItem.TodoItemId)
-                                     .PutAsync(todoItem);
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
-            return true;
+            return _firebaseClient.Child("todos")
+                                  .Child(todoItem.TodoItemId)
+                                  .PutAsync(todoItem);
         }
 
-        public async Task<bool> DeleteItemAsync(string key)
+        public Task DeleteItemAsync(string key)
         {
             if (Connectivity.NetworkAccess != NetworkAccess.Internet)
             {
                 Helpers.ShowToastMessage(Constants.CouldNotPerformActionMsg);
-                return false;
+                return null;
             }
 
-            try
-            {
-                await _firebaseClient.Child("todos")
-                                     .Child(key)
-                                     .DeleteAsync();
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
-            return true;
+            return _firebaseClient.Child("todos")
+                                  .Child(key)
+                                  .DeleteAsync();
         }
         #endregion
 
@@ -231,25 +206,17 @@ namespace FamilyAgenda.Services
             }
         }
 
-        public async Task<bool> AddMessageAsync(Message message)
+        public Task<FirebaseObject<Message>> AddMessageAsync(Message message)
         {
             if (Connectivity.NetworkAccess != NetworkAccess.Internet)
             {
                 Helpers.ShowToastMessage(Constants.CouldNotPerformActionMsg);
-                return false;
+                return null;
             }
 
-            try
-            {
-                await _firebaseClient.Child("messages")
-                                     .PostAsync(message);
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
-            return true;
+            return _firebaseClient.Child("messages")
+                                  .PostAsync(message);
+            
         }
         #endregion
 
@@ -288,25 +255,16 @@ namespace FamilyAgenda.Services
             }
         }
 
-        public async Task<bool> AddEventAsync(SchedulerEvent schedulerEvent)
+        public Task<FirebaseObject<SchedulerEvent>> AddEventAsync(SchedulerEvent schedulerEvent)
         {
             if (Connectivity.NetworkAccess != NetworkAccess.Internet)
             {
                 Helpers.ShowToastMessage(Constants.CouldNotPerformActionMsg);
-                return false;
+                return null;
             }
 
-            try
-            {
-                await _firebaseClient.Child("events")
-                                     .PostAsync(schedulerEvent);
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
-            return true;
+            return _firebaseClient.Child("events")
+                                  .PostAsync(schedulerEvent);
         }
         #endregion
 

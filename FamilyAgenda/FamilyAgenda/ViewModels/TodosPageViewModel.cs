@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -18,28 +20,28 @@ namespace FamilyAgenda.ViewModels
         private string _todoContent = "";
         private bool _isRefreshing;
         private bool _isCheckBoxVisible;
+        private DelegateCommand _getItemsCommand;
+        private DelegateCommand _refreshItemsCommand;
+        private DelegateCommand _addItemCommand;
+        private DelegateCommand<TodoItem> _checkedChangedCommand;
+        private DelegateCommand<TodoItem> _deleteItemCommand;
 
         public TodosPageViewModel(INavigationService navigationService, IFirebaseDbService firebaseDbService) : base(navigationService, firebaseDbService)
-        {                        
-            AddNewItemCommand = new DelegateCommand(AddNewItemAsync);
-            CheckedChangedCommand = new DelegateCommand<TodoItem>(UpdateItemAsync);
-            RefreshCommand = new DelegateCommand(RefreshItemsAsync);
-            DeleteItemCommand = new DelegateCommand<TodoItem>(DeleteItemAsync);
-
+        {
             NewTodoItem = new TodoItem();
 
             MessagingCenter.Subscribe<FirebaseDbService>(this, "TodoChangeEvent", (sender) =>
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    GetItemsAsync();
+                    GetItemsCommand.Execute();
                 });
             });
 
             IsCheckBoxVisible = Connectivity.NetworkAccess == NetworkAccess.Internet;
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
 
-            GetItemsAsync();
+            GetItemsCommand.Execute();
         }        
 
         public TodoItem NewTodoItem
@@ -68,15 +70,17 @@ namespace FamilyAgenda.ViewModels
 
         public ObservableCollection<TodoItem> TodoItems { get; set; } = new ObservableCollection<TodoItem>();
 
-        public DelegateCommand AddNewItemCommand { get; }
+        public DelegateCommand GetItemsCommand => _getItemsCommand ?? (_getItemsCommand = new DelegateCommand(async () => await GetItemsAsync()));
 
-        public DelegateCommand<TodoItem> CheckedChangedCommand { get; }
+        public DelegateCommand AddNewItemCommand => _addItemCommand ?? (_addItemCommand = new DelegateCommand(async () => await AddNewItemAsync()));
 
-        public DelegateCommand RefreshCommand { get; }
+        public DelegateCommand<TodoItem> CheckedChangedCommand => _checkedChangedCommand ?? (_checkedChangedCommand = new DelegateCommand<TodoItem>(async (todoItem) => await UpdateItemAsync(todoItem)));
 
-        public DelegateCommand<TodoItem> DeleteItemCommand { get; }
+        public DelegateCommand RefreshCommand => _refreshItemsCommand ?? (_refreshItemsCommand = new DelegateCommand(async () => await RefreshItemsAsync()));
 
-        private async void GetItemsAsync()
+        public DelegateCommand<TodoItem> DeleteItemCommand => _deleteItemCommand ?? (_deleteItemCommand = new DelegateCommand<TodoItem>(async (todoItem) => await DeleteItemAsync(todoItem)));
+
+        private async Task GetItemsAsync()
         {
             try
             {
@@ -95,7 +99,7 @@ namespace FamilyAgenda.ViewModels
             }
         }
 
-        private async void AddNewItemAsync()
+        private async Task AddNewItemAsync()
         {
             if (string.IsNullOrEmpty(TodoContent))
             {
@@ -106,39 +110,58 @@ namespace FamilyAgenda.ViewModels
             NewTodoItem.Username = Preferences.Get("user", "");
             NewTodoItem.Completed = false;
             NewTodoItem.CreatedAtTimestamp = (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-            if (await FirebaseDbService.AddTodoItemAsync(NewTodoItem))
+            try
             {
-                TodoContent = "";
-                PushNotificationsService.SendNotificationAsync("Todo item added: " + NewTodoItem.Content, NewTodoItem.Username);
+                var item = await FirebaseDbService.AddTodoItemAsync(NewTodoItem).ConfigureAwait(false);
+                if (item != null)
+                {
+                    TodoContent = "";
+                    PushNotificationsService.SendNotificationAsync("Todo item added: " + NewTodoItem.Content, NewTodoItem.Username);
+                }
+            }
+            catch(Exception e)
+            {
+
             }
         }
 
-        private async void UpdateItemAsync(TodoItem todoItem)
+        private async Task UpdateItemAsync(TodoItem todoItem)
         {
             if (todoItem == null)
             {
                 return;
             }
 
-            if (await FirebaseDbService.UpdateTodoItemAsync(todoItem))
+            try
             {
+                await FirebaseDbService.UpdateTodoItemAsync(todoItem).ConfigureAwait(false);
+
                 if (todoItem.Completed)
-                {                  
+                {
                     PushNotificationsService.SendNotificationAsync("Todo item completed: " + todoItem.Content, Preferences.Get("user", ""));
                 }
             }
+            catch (Exception e)
+            {
+
+            }
+
         }
 
-        private async void RefreshItemsAsync()
+        private async Task RefreshItemsAsync()
         {
             try
             {
-                var todos = await FirebaseDbService.GetTodoItemsAsync();
+                var todos = await FirebaseDbService.GetTodoItemsAsync().ConfigureAwait(false);
                 if (todos != null)
                 {
                     TodoItems.Clear();
                     todos.ForEach(TodoItems.Add);
                 }
+            }
+            catch (Exception e)
+            {
+
             }
             finally
             {
@@ -146,19 +169,59 @@ namespace FamilyAgenda.ViewModels
             }
         }
 
-        private async void DeleteItemAsync(TodoItem todoItem)
+        private async Task DeleteItemAsync(TodoItem todoItem)
         {
             if (todoItem == null)
             {
                 return;
             }
 
-            await FirebaseDbService.DeleteItemAsync(todoItem.TodoItemId);
+            try
+            {
+                await FirebaseDbService.DeleteItemAsync(todoItem.TodoItemId).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+
+            }
         }
 
         private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
             IsCheckBoxVisible = e.NetworkAccess == NetworkAccess.Internet;
         }
+
+
+        //private async Task PopulateLisk()
+        //{
+        //    CancellationTokenSource cts = new CancellationTokenSource();
+        //    cts.Token.Register(() =>
+        //    {
+        //        //show message that task was cancelled
+        //    });
+
+        //    //initialization code
+
+        //    var timeoutTask = Task.Delay(3000);
+        //    var loadDataTask = apiService.GetData(cts.Token);
+        //    var completedTask = await Task.WhenAny(timeoutTask, loadDataTask);
+
+        //    if (completedTask == timeoutTask)
+        //    {
+        //        cts.Cancel();
+        //        return;
+        //    }
+
+        //    await Task.Run(() =>
+        //    {
+        //       var data = loadDataTask.Result;
+        //       Device.BeginInvokeOnMainThread(() =>
+        //       {
+        //            //assign data to list itemssource
+        //        });
+        //    });
+
+        //    //finalization code
+        //}
     }
 }

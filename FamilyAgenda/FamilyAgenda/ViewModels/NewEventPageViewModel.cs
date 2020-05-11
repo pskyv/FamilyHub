@@ -6,6 +6,7 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -16,11 +17,11 @@ namespace FamilyAgenda.ViewModels
         private SchedulerEvent _schedulerEvent;
         private string _subject;
         private bool _canSave;
+        private DelegateCommand _cancelCommand;
+        private DelegateCommand _saveEventCommand;
 
         public NewEventPageViewModel(INavigationService navigationService, IFirebaseDbService firebaseDbService) : base(navigationService, firebaseDbService)
         {
-            SaveEventCommand = new DelegateCommand(SaveEventAsync, CanExecute).ObservesProperty(() => CanSave);
-            CancelCommand = new DelegateCommand(CancelAsync);
             SchedulerEvent = new SchedulerEvent { StartDate = DateTime.Today, EndDate = DateTime.Today, Username = Preferences.Get("user", "") };
 
             Subject = "";
@@ -48,11 +49,11 @@ namespace FamilyAgenda.ViewModels
             set { SetProperty(ref _canSave, value); }
         }
 
-        public DelegateCommand SaveEventCommand { get; }
+        public DelegateCommand SaveEventCommand => _saveEventCommand ?? (_saveEventCommand = new DelegateCommand(async () => await SaveEventAsync(), CanExecute).ObservesProperty(() => CanSave));
 
-        public DelegateCommand CancelCommand { get; }
+        public DelegateCommand CancelCommand => _cancelCommand ?? (_cancelCommand = new DelegateCommand(async () => await CancelAsync()));
 
-        private async void SaveEventAsync()
+        private async Task SaveEventAsync()
         {
             SchedulerEvent.Subject = Subject;
 
@@ -67,10 +68,17 @@ namespace FamilyAgenda.ViewModels
             SchedulerEvent.StartTimestamp = (long)(SchedulerEvent.StartDate.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             SchedulerEvent.EndTimestamp = (long)(SchedulerEvent.EndDate.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
 
-            if (await FirebaseDbService.AddEventAsync(SchedulerEvent))
+            try
             {
+                Task[] tasks = new Task[2];
+                tasks[0] = FirebaseDbService.AddEventAsync(SchedulerEvent);                
+                tasks[1] = NavigationService.GoBackAsync();
+                await Task.WhenAll(tasks);
                 PushNotificationsService.SendNotificationAsync("Event added: " + Subject, SchedulerEvent.Username);
-                await NavigationService.GoBackAsync();
+            }
+            catch(Exception e)
+            {
+
             }
         }
 
@@ -79,7 +87,7 @@ namespace FamilyAgenda.ViewModels
             return CanSave;
         }
 
-        private async void CancelAsync()
+        private async Task CancelAsync()
         {
             await NavigationService.GoBackAsync();
         }

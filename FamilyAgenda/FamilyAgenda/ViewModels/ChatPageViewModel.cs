@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -19,6 +20,7 @@ namespace FamilyAgenda.ViewModels
     {
         private Author _currentUser;
         private string _messageText;
+        private DelegateCommand _getMessagesCommand;
 
         public ChatPageViewModel(INavigationService navigationService, IFirebaseDbService firebaseDbService) : base(navigationService, firebaseDbService)
         {
@@ -39,7 +41,9 @@ namespace FamilyAgenda.ViewModels
 
         public ObservableCollection<object> Messages { get; set; } = new ObservableCollection<object>();
 
-        public DelegateCommand SendMessageCommand { get; }
+        public DelegateCommand GetMessagesCommand => _getMessagesCommand ?? (_getMessagesCommand = new DelegateCommand(async () => await GetMessagesAsync()));
+
+        //public DelegateCommand SendMessageCommand { get; }
 
         private void Initialize()
         {
@@ -50,19 +54,20 @@ namespace FamilyAgenda.ViewModels
                 Avatar = username.Equals("Panos") ? "panos_profile.png" : "sofaki.png"
             };            
 
-            MessagingCenter.Subscribe<ChatPage, TextMessage>(this, "NewMessage", (sender, arg) => { SendMessageAsync(arg); });
+            MessagingCenter.Subscribe<ChatPage, TextMessage>(this, "NewMessage", async (sender, arg) => { await SendMessageAsync(arg); });
+
             MessagingCenter.Subscribe<FirebaseDbService>(this, "MessageChangeEvent", (sender) =>
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    GetMessagesAsync();
+                    GetMessagesCommand.Execute();
                 });
             });
 
-            GetMessagesAsync();
+            GetMessagesCommand.Execute();
         }
 
-        private async void GetMessagesAsync()
+        private async Task GetMessagesAsync()
         {
             var messages = await FirebaseDbService.GetMessagesAsync();
             if (messages == null || Messages.Count == messages.Count)
@@ -85,7 +90,7 @@ namespace FamilyAgenda.ViewModels
             }
         }
 
-        private async void SendMessageAsync(TextMessage message)
+        private async Task SendMessageAsync(TextMessage message)
         {
             if (message != null)
             {
@@ -94,12 +99,19 @@ namespace FamilyAgenda.ViewModels
                 Messages.Add(message);
             }
 
-            await FirebaseDbService.AddMessageAsync(new Message 
-            { 
-                Text = message.Text, 
-                Username = message.Author.Name, 
-                Timestamp = (long)(message.DateTime.Subtract(new DateTime(1970, 1, 1))).TotalSeconds
-            });
+            try
+            {
+                await FirebaseDbService.AddMessageAsync(new Message
+                {
+                    Text = message.Text,
+                    Username = message.Author.Name,
+                    Timestamp = (long)(message.DateTime.Subtract(new DateTime(1970, 1, 1))).TotalSeconds
+                });
+            }
+            catch (Exception e)
+            {
+
+            }
         }
     }
 }
